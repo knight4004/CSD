@@ -36,7 +36,7 @@ return node;
 }
 int main()
 {
-printf("TechVidvan Tutorial: Implementation of a Binary Tree in C!\n\n");
+//printf("TechVidvan Tutorial: Implementation of a Binary Tree in C!\n\n");
 struct node *root_node = NULL;
 root_node = insert_node(root_node, 10);
 insert_node(root_node, 10);
