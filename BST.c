@@ -1,50 +1,91 @@
-#include<stdio.h>
-#include<stdlib.h>
-struct node
-{
-int value;
-struct node *left_child, *right_child;
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+   int data; 
+   struct node *leftChild;
+   struct node *rightChild;
 };
-struct node *new_node(int value)
-{
-struct node *tmp = (struct node *)malloc(sizeof(struct node));
-tmp->value = value;
-tmp->left_child = tmp->right_child = NULL;
-return tmp;
+
+struct node *root = NULL;
+
+void insert(int data) {
+   struct node *tempNode = (struct node*) malloc(sizeof(struct node));
+   struct node *current;
+   struct node *parent;
+
+   tempNode->data = data;
+   tempNode->leftChild = NULL;
+   tempNode->rightChild = NULL;
+
+   if(root == NULL) {
+      root = tempNode;
+   } else {
+      current = root;
+      parent = NULL;
+
+      while(1) { 
+         parent = current;
+
+         if(data < parent->data) {
+            current = current->leftChild;                
+
+            if(current == NULL) {
+               parent->leftChild = tempNode;
+               return;
+            }
+         } 
+         else {
+            current = current->rightChild;
+
+            if(current == NULL) {
+               parent->rightChild = tempNode;
+               return;
+            }
+         }
+      }            
+   }
 }
-void print(struct node *root_node) // displaying the nodes!
-{
-if (root_node != NULL)
-{
-print(root_node->left_child);
-printf("%d \n", root_node->value);
-print(root_node->right_child);
+
+void pre_order_traversal(struct node* root) {
+   if(root != NULL) {
+      printf("%d ",root->data);
+      pre_order_traversal(root->leftChild);
+      pre_order_traversal(root->rightChild);
+   }
 }
+
+void inorder_traversal(struct node* root) {
+   if(root != NULL) {
+      inorder_traversal(root->leftChild);
+      printf("%d ",root->data);          
+      inorder_traversal(root->rightChild);
+   }
 }
-struct node* insert_node(struct node* node, int value) // inserting nodes!
-{
-if (node == NULL) return new_node(value);
-if (value < node->value)
-{
-node->left_child = insert_node(node->left_child, value);
+
+void post_order_traversal(struct node* root) {
+   if(root != NULL) {
+      post_order_traversal(root->leftChild);
+      post_order_traversal(root->rightChild);
+      printf("%d ", root->data);
+   }
 }
-else if (value > node->value)
-{
-node->right_child = insert_node(node->right_child, value);
-}
-return node;
-}
-int main()
-{
-//printf("TechVidvan Tutorial: Implementation of a Binary Tree in C!\n\n");
-struct node *root_node = NULL;
-root_node = insert_node(root_node, 10);
-insert_node(root_node, 10);
-insert_node(root_node, 30);
-insert_node(root_node, 25);
-insert_node(root_node, 36);
-insert_node(root_node, 56);
-insert_node(root_node, 78);
-print(root_node);
-return 0;
+
+int main() {
+   int i;
+   int array[7] = { 27, 14, 35, 10, 19, 31, 42 };
+
+   for(i = 0; i < 7; i++)
+      insert(array[i]);
+
+   printf("\nPreorder traversal: ");
+   pre_order_traversal(root);
+
+   printf("\nInorder traversal: ");
+   inorder_traversal(root);
+
+   printf("\nPost order traversal: ");
+   post_order_traversal(root);       
+
+   return 0;
 }
